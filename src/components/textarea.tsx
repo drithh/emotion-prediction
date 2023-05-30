@@ -10,7 +10,7 @@ interface Props {
 export default function Textarea(props: Props) {
   const [isFocused, setIsFocused] = useState(false);
   const getRows = () => {
-    return Math.min(props.value.split('\n').length + 1, 30); // Membatasi jumlah baris antara 1 dan 20
+    return Math.min(props.value.split('\n').length + 1, 20); // Membatasi jumlah baris antara 1 dan 20
   };
 
   const getHeight = () => {
