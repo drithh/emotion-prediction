@@ -29,7 +29,7 @@ export default function ImageWithAnimation({ src, alt }: Props) {
   return (
     <AnimatePresence mode="popLayout">
       <motion.div
-        className="flex-[0.4] w-full h-full my-auto"
+        className="flex-[0.4] w-full h-full m-auto"
         key={src}
         initial={{ opacity: 0, scale: 0.8, y: 50, rotate: 45 }}
         animate={{
@@ -42,7 +42,7 @@ export default function ImageWithAnimation({ src, alt }: Props) {
         transition={{ duration: 0.3, bounce: 0.3 }}
         onAnimationComplete={onAnimationComplete}
       >
-        <img src={imageSrc} alt={alt} />
+        <img src={imageSrc} alt={alt} className="m-auto" />
       </motion.div>
     </AnimatePresence>
   );

@@ -44,18 +44,18 @@ function App() {
 
   return (
     <div className="bg-secondary min-h-screen flex place-items-center ">
-      <div className="max-w-screen-lg  mx-auto my-20">
-        <header className="w-full mb-24">
-          <h1 className="w-full text-center font-black uppercase text-[7rem] inline-block text-transparent bg-clip-text bg-gradient-to-r from-primary-button to-accent   decoration-gray-200">
+      <div className="max-w-screen-lg w-screen mx-auto my-20">
+        <header className="w-full mb-24 max-w-[80vw] mx-auto">
+          <h1 className="w-full text-center font-black uppercase text-[4rem] md:text-[7rem] inline-block text-transparent bg-clip-text bg-gradient-to-r from-primary-button to-accent   decoration-gray-200 sm:leading-normal leading-none">
             Prediksi Emosi
           </h1>
-          <h2 className="w-full text-center font-bold text-[2.3rem] text-primary text-opacity-50 opacity-80 uppercase rounded-3xl px-4 bg-secondary-button">
+          <h2 className="w-full text-center font-bold text-[1.2rem] py-2 mt-8 md:py-0 md:mt-0 md:text-[2.3rem] text-primary text-opacity-50 opacity-80 uppercase rounded-3xl px-4 bg-secondary-button">
             Tebak emosi dari lirik musik pop Indonesia
           </h2>
         </header>
         <main className="flex flex-col gap-y-12">
-          <div className="wrapper bg-secondary rounded-3xl p-8 shadow-lg flex flex-col gap-8">
-            <h2 className="w-full text-center font-medium text-2xl text-primary text-opacity-50 ">
+          <div className="wrapper  bg-secondary rounded-3xl p-8 shadow-lg flex flex-col gap-8">
+            <h2 className="w-full text-center font-medium text-xl md:text-2xl text-primary text-opacity-50 ">
               Masukkan lirik lagu di bawah ini, kemudian tekan tombol prediksi
             </h2>
             <Textarea
@@ -63,7 +63,7 @@ function App() {
               onChange={(e) => setText(e.target.value)}
               placeholder="Masukkan lirik lagu di sini..."
             />
-            <div className="w-full flex justify-between my-6">
+            <div className="w-full flex justify-between my-6 md:flex-row flex-col gap-4">
               <Button type="secondary" onClick={getLyric}>
                 Contoh Lirik
               </Button>
@@ -73,10 +73,10 @@ function App() {
             </div>
           </div>
           <div className="wrapper bg-secondary rounded-3xl p-8 shadow-lg flex flex-col gap-8">
-            <h2 className="w-full font-medium text-2xl text-primary text-opacity-70 ">
+            <h2 className="w-full font-medium text-xl md:text-2xl text-primary text-opacity-70 ">
               Aku tebak emosi dari lirik lagu kamu adalah {emotion}
             </h2>
-            <div className="flex place-content-between ">
+            <div className="flex place-content-between flex-col md:flex-row md:gap-0 gap-8">
               <div className="flex flex-1 flex-col h-full place-content-between gap-3">
                 <Bar
                   textClass="text-green-500"
