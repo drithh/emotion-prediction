@@ -7,14 +7,6 @@ interface Props {
 }
 
 export default function ImageWithAnimation({ src, alt }: Props) {
-  const randomImageLoading = Math.floor(Math.random() * 2) + 1;
-  const pathImageLoading =
-    randomImageLoading === 1
-      ? '/emoji/face-with-monocle.png'
-      : '/emoji/thinking-face.png';
-  console.log(src);
-  const imageSrc = src === '' ? pathImageLoading : src;
-
   const [shouldAnimateEnter, setShouldAnimateEnter] = useState(false);
 
   const exitVariants = {
@@ -31,18 +23,18 @@ export default function ImageWithAnimation({ src, alt }: Props) {
       <motion.div
         className="flex-[0.4] w-full h-full m-auto"
         key={src}
-        initial={{ opacity: 0, scale: 0.8, y: 50, rotate: 45 }}
+        initial={{ opacity: 0.5, scale: 0.8, y: 50 }}
         animate={{
           opacity: 1,
           scale: shouldAnimateEnter ? [0, 1.2, 1] : 1,
-          y: 0,
+          y: shouldAnimateEnter ? [50, -20, 10, 0] : 0,
           rotate: 0,
         }}
         exit={exitVariants}
-        transition={{ duration: 0.3, bounce: 0.3 }}
+        transition={{ duration: 0.3 }}
         onAnimationComplete={onAnimationComplete}
       >
-        <img src={imageSrc} alt={alt} className="m-auto" />
+        <img src={src} alt={alt} className="m-auto" />
       </motion.div>
     </AnimatePresence>
   );

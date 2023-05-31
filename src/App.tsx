@@ -3,12 +3,22 @@ import Textarea from './components/textarea';
 import Button from './components/button';
 import Bar from './components/bar';
 import Emoji from './components/emoji';
+import DotAnimation from './components/dot-animation';
 
 function App() {
   const [text, setText] = useState('');
   const [isAnimated, setIsAnimated] = useState(false);
-  const [emojiPath, setEmojiPath] = useState('');
   const [emotion, setEmotion] = useState('');
+
+  const getRandomThinkingEmoji = () => {
+    const randomImageLoading = Math.floor(Math.random() * 2) + 1;
+    const pathImageLoading =
+      randomImageLoading === 1
+        ? '/emoji/face-with-monocle.png'
+        : '/emoji/thinking-face.png';
+    return pathImageLoading;
+  };
+  const [emojiPath, setEmojiPath] = useState(getRandomThinkingEmoji());
 
   const getLyric = () => {
     const lirik = `Aku mencari cinta Di tempat yang tidak biasa Tepat di antara luka Dan kesunyian tak mereda Telah ku temukan dia Memelukku dalam sepinya Dan ku mencintainya Dalam ruang yang telah terbatas Hanya senandung jiwa Hanya rasa yang seluruhnya Aku mencintainya Menjaganya dalam rahasia Oooo... Oooo... Cinta ini menutup mataku Menggenggam nafasku Membelengguku Katakan padaku ini tak benar Tinggalkan aku cinta Meski luka kian merebak Meski duri merajam Bunga itu tetap mengembang Oooo... Oooo... Cinta ini memeluk jiwaku Menggenggam nafasku Membelengguku Katakan padaku ini tak benar Oooo... Oooo... Cinta ini mendekap tubuhku Katakan hatiku Katakan itu Katakan padaku ini tak benar Aku mencari cinta... Aku mencari cinta...`;
@@ -17,27 +27,28 @@ function App() {
   };
 
   const predict = () => {
+    const timeoutSetEmoji = (emoji: string, emojiPath: string) =>
+      setTimeout(() => {
+        setEmotion(emoji);
+        setEmojiPath(emojiPath);
+      }, 1500);
+
     const currentIsAnimated = isAnimated;
     setIsAnimated(!currentIsAnimated);
 
     if (!currentIsAnimated) {
-      console.log('stop');
       setEmotion('');
-      setEmojiPath('');
+      setEmojiPath(getRandomThinkingEmoji());
     } else {
       const result = 'sad';
       if (result === 'sad') {
-        setEmotion('sad');
-        setEmojiPath('emoji/crying-face.png');
+        timeoutSetEmoji('sad', 'emoji/crying-face.png');
       } else if (result === 'happy') {
-        setEmotion('happy');
-        setEmojiPath('happy');
+        timeoutSetEmoji('happy', 'happy');
       } else if (result === 'angry') {
-        setEmotion('angry');
-        setEmojiPath('happy');
+        timeoutSetEmoji('happy', 'happy');
       } else if (result === 'fear') {
-        setEmotion('fear');
-        setEmojiPath('happy');
+        timeoutSetEmoji('happy', 'happy');
       }
     }
   };
@@ -73,8 +84,13 @@ function App() {
             </div>
           </div>
           <div className="wrapper bg-secondary rounded-3xl p-8 shadow-lg flex flex-col gap-8">
-            <h2 className="w-full font-medium text-xl md:text-2xl text-primary text-opacity-70 ">
-              Aku tebak emosi dari lirik lagu kamu adalah {emotion}
+            <h2 className="w-full font-medium text-xl md:text-2xl text-primary text-opacity-60 ">
+              Aku tebak emosi dari lirik lagu kamu adalah{' '}
+              {emotion === '' ? (
+                <DotAnimation />
+              ) : (
+                <span className="text-primary">{emotion}</span>
+              )}
             </h2>
             <div className="flex place-content-between flex-col md:flex-row md:gap-0 gap-8">
               <div className="flex flex-1 flex-col h-full place-content-between gap-3">
