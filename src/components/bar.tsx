@@ -22,6 +22,7 @@ export default function Bar({
 
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
+    if (!isAnimated) return;
     const propsInterval = Math.random() * 1000 + 200; // Mengacak interval antara 0,5 hingga 1,5 detik
     const interval = setInterval(() => {
       setIsExpanded((prevExpanded) => !prevExpanded);
@@ -31,10 +32,6 @@ export default function Bar({
     return () => clearInterval(interval);
   }, [isAnimated]);
 
-  useEffect(() => {
-    setPercentage(width);
-  }, [width]);
-
   const getWidth = () => {
     if (!ref.current) return 0;
     const parentWidth = ref.current.parentElement?.offsetWidth ?? 1;
@@ -42,9 +39,20 @@ export default function Bar({
   };
 
   const updatePercentage = useCallback(() => {
-    if (!isAnimated) setTimeout(() => setPercentage(width), 1000);
     setPercentage(getWidth());
-  }, [isAnimated, width]);
+  }, []);
+
+  const [prevWidth, setPrevWidth] = useState('');
+
+  useEffect(() => {
+    const parrentWidth = ref.current?.parentElement?.offsetWidth ?? 1;
+    const currentWidth = !isAnimated
+      ? `${parrentWidth * (width / 100)}px`
+      : isExpanded
+      ? `${parrentWidth}px`
+      : '50px';
+    setPrevWidth(currentWidth);
+  }, [width, isAnimated, isExpanded]);
 
   return (
     <div className="flex flex-col ">
@@ -56,8 +64,9 @@ export default function Bar({
       <motion.div
         ref={ref}
         className={`rounded-2xl py-0.5 px-2 ${barClass} flex place-items-center place-content-end`}
+        initial={{ width: '0%' }}
         animate={{
-          width: !isAnimated ? `${width}%` : isExpanded ? '100%' : '50px',
+          width: prevWidth,
           transition: { duration: speed },
         }}
         onUpdate={updatePercentage}

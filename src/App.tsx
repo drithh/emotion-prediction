@@ -27,11 +27,13 @@ function App() {
   };
 
   const predict = () => {
-    const timeoutSetEmoji = (emoji: string, emojiPath: string) =>
+    const timeoutSetEmoji = (emoji: string, emojiPath: string) => {
+      if (!currentIsAnimated) return;
       setTimeout(() => {
         setEmotion(emoji);
         setEmojiPath(emojiPath);
       }, 1500);
+    };
 
     const currentIsAnimated = isAnimated;
     setIsAnimated(!currentIsAnimated);

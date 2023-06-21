@@ -14,6 +14,12 @@ export default function ImageWithAnimation({ src, alt }: Props) {
     scale: 0.2,
   };
 
+  const enterTransition = {
+    type: 'spring',
+    stiffness: 500,
+    duration: 0.1, // Enter animation duration (in seconds)
+  };
+
   const onAnimationComplete = () => {
     setShouldAnimateEnter(true);
   };
@@ -26,12 +32,14 @@ export default function ImageWithAnimation({ src, alt }: Props) {
         initial={{ opacity: 0.5, scale: 0.8, y: 50 }}
         animate={{
           opacity: 1,
-          scale: shouldAnimateEnter ? [0, 1.2, 1] : 1,
+          scale: 1,
           y: shouldAnimateEnter ? [50, -20, 10, 0] : 0,
           rotate: 0,
         }}
         exit={exitVariants}
-        transition={{ duration: 0.3 }}
+        transition={{
+          ...enterTransition,
+        }}
         onAnimationComplete={onAnimationComplete}
       >
         <img src={src} alt={alt} className="m-auto" />
