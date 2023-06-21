@@ -9,11 +9,10 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /app
 ENV PIP_DEFAULT_TIMEOUT=100
-RUN pip install poetry torch --extra-index-url https://download.pytorch.org/whl/cpu
+RUN pip install torch --extra-index-url https://download.pytorch.org/whl/cpu
 
-COPY ./pyproject.toml ./poetry.lock* /app/
-RUN poetry config virtualenvs.create false
-RUN poetry install --no-root
+COPY ./requirements.txt /app/requirements.txt
+RUN pip install -r requirements.txt
 
 COPY . /app
 
