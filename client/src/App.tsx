@@ -58,18 +58,18 @@ function App() {
   return (
     <div className="bg-secondary min-h-screen flex place-items-center ">
       <div className="max-w-screen-lg w-screen mx-auto my-20">
-        <header className="w-full mb-24 max-w-[80vw] mx-auto">
-          <h1 className="w-full text-center font-black uppercase text-[4rem] md:text-[7rem] inline-block text-transparent bg-clip-text bg-gradient-to-r from-primary-button to-accent   decoration-gray-200 sm:leading-normal leading-none">
-            Prediksi Emosi
+        <header className="w-full mb-12 max-w-[80vw] mx-auto">
+          <h1 className="w-full mb-2 text-center font-black uppercase text-[3rem] md:text-[5.7rem] inline-block text-transparent bg-clip-text bg-gradient-to-r from-primary-button to-accent   decoration-gray-200 xl:leading-normal leading-none">
+            Emotion Detection
           </h1>
-          <h2 className="w-full text-center font-bold text-[1.2rem] py-2 mt-8 md:py-0 md:mt-0 md:text-[2.3rem] text-primary text-opacity-50 opacity-80 uppercase rounded-3xl px-4 bg-secondary-button">
-            Tebak emosi dari lirik musik pop Indonesia
+          <h2 className="w-full text-center font-bold text-[1rem] py-2 mt-8 md:py-0 md:mt-0 md:text-[1.5rem] text-primary text-opacity-50 opacity-80 uppercase rounded-3xl px-4 bg-secondary-button">
+            Guess the emotions from the lyrics of Indonesian pop music
           </h2>
         </header>
         <main className="flex flex-col gap-y-12">
           <div className="wrapper  bg-secondary rounded-3xl p-8 shadow-lg flex flex-col gap-8">
             <h2 className="w-full text-center font-medium text-xl md:text-2xl text-primary text-opacity-50 ">
-              Masukkan lirik lagu di bawah ini, kemudian tekan tombol prediksi
+              Please enter the lyrics below, then press the predict button.
             </h2>
             <Textarea
               value={text}
@@ -78,16 +78,16 @@ function App() {
             />
             <div className="w-full flex justify-between my-6 md:flex-row flex-col gap-4">
               <Button type="secondary" onClick={getLyric}>
-                Contoh Lirik
+                Lyric Example
               </Button>
               <Button type="primary" onClick={predict}>
-                Prediksi
+                Predict
               </Button>
             </div>
           </div>
           <div className="wrapper bg-secondary rounded-3xl p-8 shadow-lg flex flex-col gap-8">
             <h2 className="w-full font-medium text-xl md:text-2xl text-primary text-opacity-60 ">
-              Aku tebak emosi dari lirik lagu kamu adalah{' '}
+              I guess the emotion from the lyrics of your song is{' '}
               {emotion === '' ? (
                 <DotAnimation />
               ) : (
