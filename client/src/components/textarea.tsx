@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { useState } from "react";
+import { motion } from "framer-motion";
 
 interface Props {
   placeholder: string;
@@ -10,7 +10,7 @@ interface Props {
 export default function Textarea(props: Props) {
   const [isFocused, setIsFocused] = useState(false);
   const getRows = () => {
-    return Math.min(props.value.split('\n').length + 1, 20); // Membatasi jumlah baris antara 1 dan 20
+    return Math.min(props.value.split("\n").length + 1, 20); // Membatasi jumlah baris antara 1 dan 20
   };
 
   const getHeight = () => {
@@ -24,7 +24,7 @@ export default function Textarea(props: Props) {
 
   const containerVariants = {
     expanded: {
-      height: 'auto',
+      height: "auto",
       transition: {
         duration: 0.2,
       },
@@ -40,7 +40,7 @@ export default function Textarea(props: Props) {
   return (
     <div
       className={`w-full min-h-[16rem] border-primary border-2 rounded-2xl p-4 border-opacity-20 opacity-100 ${
-        isFocused ? 'border-opacity-40' : 'border-opacity-20'
+        isFocused ? "border-opacity-40" : "border-opacity-20"
       }`}
     >
       <motion.textarea
@@ -48,7 +48,7 @@ export default function Textarea(props: Props) {
         onBlur={() => setIsFocused(false)}
         variants={containerVariants}
         initial="collapsed"
-        animate={props.value ? 'expanded' : 'collapsed'}
+        animate={props.value ? "expanded" : "collapsed"}
         style={{ height: getHeight() }}
         rows={getRows()}
         className="w-full  min-h-[16rem] bg-transparent focus-visible:border-gray-500 focus-visible:outline-0 scrollbar-thin scrollbar-thumb-secondary-button scrollbar-thumb-rounded-full"

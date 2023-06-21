@@ -1,5 +1,8 @@
 {
   "name": "emotion-prediction",
+  "workspaces": [
+    "client/*"
+  ],
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -7,13 +10,18 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "api": "npx openapi -i http://localhost:8000/v1/openapi.json -o src/api -c axios"
   },
   "dependencies": {
+    "@tanstack/react-query": "^4.29.15",
+    "axios": "^1.4.0",
+    "form-data": "^4.0.0",
     "framer": "^2.3.0",
     "framer-motion": "^10.12.16",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-hot-toast": "^2.4.1"
   },
   "devDependencies": {
     "@types/react": "^18.0.37",
@@ -25,7 +33,9 @@
     "eslint": "^8.38.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.3.4",
+    "openapi-typescript-codegen": "^0.24.0",
     "postcss": "^8.4.24",
+    "prettier": "^2.8.8",
     "tailwind-scrollbar": "^3.0.4",
     "tailwindcss": "^3.3.2",
     "typescript": "^5.0.2",

@@ -5,8 +5,10 @@ from fastapi.responses import JSONResponse, PlainTextResponse
 from fastapi.routing import APIRoute
 from fastapi.staticfiles import StaticFiles
 from starlette.exceptions import HTTPException as StarletteHTTPException
+from starlette.middleware.cors import CORSMiddleware
 
 from config import settings
+
 
 def create_app():
     description = f"{settings.PROJECT_NAME} API"
@@ -42,16 +44,28 @@ def create_app():
 
     setup_gzip_middleware(app)
     setup_router(app)
-    return app
+    setup_cors_middleware(app)
 
+    return app
 
 
 def setup_gzip_middleware(app):
     app.add_middleware(GZipMiddleware, minimum_size=500)
 
+
 from api.model import router as model_router
 
+
 def setup_router(app):
-    app.include_router(model_router, prefix=settings.API_PATH)
-    
-    
+    app.include_router(model_router, prefix=settings.API_PATH, tags=["Model"])
+
+
+def setup_cors_middleware(app):
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],
+        allow_credentials=True,
+        allow_methods=["*"],
+        expose_headers=["Content-Range", "Range"],
+        allow_headers=["Authorization", "Range", "Content-Range"],
+    )

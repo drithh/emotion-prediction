@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { motion } from 'framer-motion';
+import { useCallback, useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
 
 interface Props {
   textClass: string;
@@ -42,7 +42,7 @@ export default function Bar({
     setPercentage(getWidth());
   }, []);
 
-  const [prevWidth, setPrevWidth] = useState('');
+  const [prevWidth, setPrevWidth] = useState("");
 
   useEffect(() => {
     const parrentWidth = ref.current?.parentElement?.offsetWidth ?? 1;
@@ -50,7 +50,7 @@ export default function Bar({
       ? `${parrentWidth * (width / 100)}px`
       : isExpanded
       ? `${parrentWidth}px`
-      : '50px';
+      : "50px";
     setPrevWidth(currentWidth);
   }, [width, isAnimated, isExpanded]);
 
@@ -64,7 +64,7 @@ export default function Bar({
       <motion.div
         ref={ref}
         className={`rounded-2xl py-0.5 px-2 ${barClass} flex place-items-center place-content-end`}
-        initial={{ width: '0%' }}
+        initial={{ width: "0%" }}
         animate={{
           width: prevWidth,
           transition: { duration: speed },

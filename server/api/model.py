@@ -12,7 +12,7 @@ router = APIRouter()
 
 
 class PredictRequest(BaseModel):
-    lyrics: str
+    lyric: str
 
 
 class Label(BaseModel):
@@ -33,12 +33,12 @@ xgb_model = xgb.Booster(model_file=f"{CURRENT_PATH}/model/xgb_model.model")
 lgb_model = lgb.Booster(model_file=f"{CURRENT_PATH}/model/lgb_model.txt")
 
 
-@router.post("/predict", status_code=status.HTTP_200_OK)
+@router.post("/predict", response_model=PredictResponse, status_code=status.HTTP_200_OK)
 def predict(
     request: PredictRequest,
 ):
     try:
-        cleaned_text = preprocess(request.lyrics)
+        cleaned_text = preprocess(request.lyric)
     except:
         print("error preprocess")
         raise HTTPException(
