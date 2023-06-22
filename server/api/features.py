@@ -22,11 +22,10 @@ inset_pos_dict = inset_pos.set_index("word")["weight"].to_dict()
 inset_neg_dict = inset_neg.set_index("word")["weight"].to_dict()
 
 #  pretrained model
-pretrained_name = "StevenLimcorn/indonesian-roberta-base-emotion-classifier"
-
-tokenizer = AutoTokenizer.from_pretrained(pretrained_name)
-model = AutoModelForSequenceClassification.from_pretrained(pretrained_name)
-
+tokenizer = AutoTokenizer.from_pretrained("./api/model/pretrained/tokenizer", local_files_only=True)
+model = AutoModelForSequenceClassification.from_pretrained("./api/model/pretrained/model", local_files_only=True)
+# tokenizer.save_pretrained("./api/model/pretrained/tokenizer")
+# model.save_pretrained("./api/model/pretrained/model")
 label_mapping = {
     0: "sadness",
     1: "anger",

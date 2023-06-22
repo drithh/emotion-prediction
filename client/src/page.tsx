@@ -99,12 +99,14 @@ export default function Page() {
           const meanHappy = ((data.XGB.happy + data.LGBM.happy) / 2) * 100;
           const meanAnger = ((data.XGB.anger + data.LGBM.anger) / 2) * 100;
           const meanFear = ((data.XGB.fear + data.LGBM.fear) / 2) * 100;
-          setBarsWidth({
+
+          const barsWidth = {
             sadness: meanSadness,
             anger: meanAnger,
             fear: meanFear,
             happy: meanHappy,
-          });
+          };
+          setBarsWidth({ ...barsWidth });
 
           // find max emotion
           const maxEmotion = Object.keys(barsWidth).reduce((a, b) =>
@@ -112,6 +114,7 @@ export default function Page() {
               ? a
               : b
           ) as keyof BarsWidth;
+          console.log();
           const timeoutSetEmoji = (emoji: string, emojiState: string) => {
             setEmotion(emoji);
             setEmojiPath(getRandomEmoji(emojiState));
@@ -129,24 +132,6 @@ export default function Page() {
         },
       }
     );
-
-    // const currentIsAnimated = isAnimated;
-
-    // if (!currentIsAnimated) {
-    //   setEmotion("");
-    //   setEmojiPath(getRandomEmoji("thinking"));
-    // } else {
-    //   const result = "sad";
-    //   if (result === "sad") {
-    //     timeoutSetEmoji("sad", "emoji/crying-face.png");
-    //   } else if (result === "happy") {
-    //     timeoutSetEmoji("happy", "happy");
-    //   } else if (result === "angry") {
-    //     timeoutSetEmoji("happy", "happy");
-    //   } else if (result === "fear") {
-    //     timeoutSetEmoji("happy", "happy");
-    //   }
-    // }
   };
 
   return (
