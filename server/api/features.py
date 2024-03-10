@@ -11,21 +11,26 @@ nltk.download("punkt")
 
 
 # sentiment analysis
-inset_pos = pd.read_csv(
-    "https://raw.githubusercontent.com/fajri91/InSet/master/positive.tsv", sep="\t"
-)
-inset_neg = pd.read_csv(
-    "https://raw.githubusercontent.com/fajri91/InSet/master/negative.tsv", sep="\t"
-)
+inset_pos = pd.read_csv("api/model/inset/positive.tsv", sep="\t")
+inset_neg = pd.read_csv("api/model/inset/negative.tsv", sep="\t")
 
 inset_pos_dict = inset_pos.set_index("word")["weight"].to_dict()
 inset_neg_dict = inset_neg.set_index("word")["weight"].to_dict()
 
 #  pretrained model
-tokenizer = AutoTokenizer.from_pretrained("./api/model/pretrained/tokenizer", local_files_only=True)
-model = AutoModelForSequenceClassification.from_pretrained("./api/model/pretrained/model", local_files_only=True)
+# pretrained_name = "StevenLimcorn/indonesian-roberta-base-emotion-classifier"
+# tokenizer = AutoTokenizer.from_pretrained(pretrained_name)
+# model = AutoModelForSequenceClassification.from_pretrained(pretrained_name)
 # tokenizer.save_pretrained("./api/model/pretrained/tokenizer")
 # model.save_pretrained("./api/model/pretrained/model")
+
+tokenizer = AutoTokenizer.from_pretrained(
+    "./api/model/pretrained/tokenizer", local_files_only=True
+)
+model = AutoModelForSequenceClassification.from_pretrained(
+    "./api/model/pretrained/model", local_files_only=True
+)
+
 label_mapping = {
     0: "sadness",
     1: "anger",

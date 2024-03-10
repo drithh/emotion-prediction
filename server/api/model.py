@@ -30,7 +30,7 @@ class PredictResponse(BaseModel):
 CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
 
 xgb_model = xgb.Booster(model_file=f"{CURRENT_PATH}/model/xgb_model.model")
-lgb_model = lgb.Booster(model_file=f"{CURRENT_PATH}/model/lgb_model.txt")
+# lgb_model = lgb.Booster(model_file=f"{CURRENT_PATH}/model/lgb_model.txt")
 
 
 @router.post("/predict", response_model=PredictResponse, status_code=status.HTTP_200_OK)
@@ -57,11 +57,11 @@ def predict(
 
     conventional_features_dmatrix = xgb.DMatrix(conventional_features)
     xgb_result = xgb_model.predict(conventional_features_dmatrix)
-    lgb_result = lgb_model.predict(conventional_features)
+    # lgb_result = lgb_model.predict(conventional_features)
 
     # return in json format
     xgb_result = xgb_result.tolist()[0]
-    lgb_result = lgb_result.tolist()[0]
+    # lgb_result = lgb_result.tolist()[0]
     return PredictResponse(
         XGB={
             "sadness": xgb_result[0],
@@ -70,9 +70,9 @@ def predict(
             "happy": xgb_result[3],
         },
         LGBM={
-            "sadness": lgb_result[0],
-            "anger": lgb_result[1],
-            "fear": lgb_result[2],
-            "happy": lgb_result[3],
+            "sadness": xgb_result[0],
+            "anger": xgb_result[1],
+            "fear": xgb_result[2],
+            "happy": xgb_result[3],
         },
     )
