@@ -14,7 +14,7 @@ def create_app():
     description = f"{settings.PROJECT_NAME} API"
     app = FastAPI(
         title=settings.PROJECT_NAME,
-        servers=[{"url": settings.REACT_APP_BACKEND_URL}],
+        servers=[{"url": settings.BACKEND_URL}],
         openapi_url=f"{settings.API_PATH}/openapi.json",
         docs_url="/swagger",
         description=description,

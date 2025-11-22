@@ -5,7 +5,9 @@ from tqdm import tqdm
 from nltk.corpus import stopwords
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 import pandas as pd
-from transformers import AutoTokenizer, AutoModelForSequenceClassification
+from transformers import AutoTokenizer
+import onnxruntime as ort
+import os
 
 nltk.download("punkt")
 
@@ -17,19 +19,13 @@ inset_neg = pd.read_csv("api/model/inset/negative.tsv", sep="\t")
 inset_pos_dict = inset_pos.set_index("word")["weight"].to_dict()
 inset_neg_dict = inset_neg.set_index("word")["weight"].to_dict()
 
-#  pretrained model
-# pretrained_name = "StevenLimcorn/indonesian-roberta-base-emotion-classifier"
-# tokenizer = AutoTokenizer.from_pretrained(pretrained_name)
-# model = AutoModelForSequenceClassification.from_pretrained(pretrained_name)
-# tokenizer.save_pretrained("./api/model/pretrained/tokenizer")
-# model.save_pretrained("./api/model/pretrained/model")
+# ONNX model
+CURRENT_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+onnx_model_path = os.path.join(CURRENT_PATH, "onnx-model", "model.onnx")
+tokenizer_path = os.path.join(CURRENT_PATH, "onnx-model")
 
-tokenizer = AutoTokenizer.from_pretrained(
-    "./api/model/pretrained/tokenizer", local_files_only=True
-)
-model = AutoModelForSequenceClassification.from_pretrained(
-    "./api/model/pretrained/model", local_files_only=True
-)
+tokenizer = AutoTokenizer.from_pretrained(tokenizer_path, local_files_only=True)
+onnx_session = ort.InferenceSession(onnx_model_path)
 
 label_mapping = {
     0: "sadness",
@@ -143,16 +139,35 @@ def process_input(preprocessed_text):
         .apply(lambda x: x[1])
     )
 
-    # pretrained model
+    # ONNX model
 
     def get_emotion_probabilities(text):
-        encoded_input = tokenizer(text, return_tensors="pt")
-        output = model(**encoded_input)
-        logits = output.logits
-        probabilities = logits.softmax(dim=1).tolist()[0]
+        # Tokenize input
+        encoded_input = tokenizer(
+            text,
+            return_tensors="np",
+            padding=True,
+            truncation=True,
+            max_length=512
+        )
+        
+        # Prepare inputs for ONNX
+        inputs = {
+            "input_ids": encoded_input["input_ids"].astype(np.int64),
+            "attention_mask": encoded_input["attention_mask"].astype(np.int64)
+        }
+        
+        # Run inference
+        outputs = onnx_session.run(None, inputs)
+        logits = outputs[0]
+        
+        # Apply softmax
+        exp_logits = np.exp(logits - np.max(logits, axis=1, keepdims=True))
+        probabilities = exp_logits / np.sum(exp_logits, axis=1, keepdims=True)
+        probabilities = probabilities[0]
 
         emotion_probabilities = {
-            label_mapping[i]: probabilities[i] for i in range(len(probabilities))
+            label_mapping[i]: float(probabilities[i]) for i in range(len(probabilities))
         }
         del emotion_probabilities["love"]
 
